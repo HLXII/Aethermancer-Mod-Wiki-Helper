@@ -1,0 +1,42 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "build",
+			"group": {
+				"kind": "build",
+			},
+			"problemMatcher": [],
+			"label": "dotnet: build"
+		},
+		{
+			"label": "Deploy Plugin",
+			"type": "shell",
+			"dependsOn": "dotnet: build",
+			"command": "del /Q \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Aethermancer\\BepInEx\\plugins\\WikiHelper.dll\" && copy /y \"src\\bin\\Debug\\netstandard2.1\\WikiHelper.dll\" \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Aethermancer\\BepInEx\\plugins\"",
+			"options": {
+				"shell": {
+					"executable": "cmd.exe",
+					"args": [
+						"/c"
+					]
+				}
+			},
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Build and Deploy",
+			"dependsOn": [
+				"dotnet: build",
+				"Deploy Plugin"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
