@@ -463,6 +463,9 @@ public static class ParseHelper
         // Remove new lines
         description = description.Replace("\n", "<br/>");
 
+        // Remove apostrophes
+        description = description.Replace("’", "'");
+
         // Remove empty italics
         description = description.Replace("<i><color=#74655eff></color></i>", "");
 
