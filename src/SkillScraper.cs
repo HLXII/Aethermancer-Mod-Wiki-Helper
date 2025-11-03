@@ -461,7 +461,7 @@ public static class ParseHelper
     public static string ReformatDescription(string description)
     {
         // Remove new lines
-        description = description.Replace("\n", "<br/>");
+        description = Regex.Replace(description, @"\s*\n\s*", "<br/>");
 
         // Remove apostrophes
         description = description.Replace("’", "'");
