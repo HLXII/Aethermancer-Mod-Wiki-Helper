@@ -323,7 +323,7 @@ public static class ParseHelper
             "Age", "Cooking", "Dodge", "Force", "Glory", "Power", "Temporary Power", "Redirect", "Regeneration", "Sidekick", "Bleed", "Burn", "Poison", "Terror", "Weakness",
             "Retaliate", "Affliction", "Shield",
             "Minion", "Corruption", "Max Health", "Poise Damage",
-            "Crit Chance", "Shield Generator", "Evasion", "Corruption Cleanse", "Terror Application", "Burn Damage", "Sidekick Damage", "Crit Damage", "Minion Damage"
+            "Crit Chance", "Shield Generator", "Evasion", "Corruption Cleanse", "Terror Application", "Burn Damage", "Sidekick Damage", "Crit Damage", "Minion Damage", "On Crit"
         ];
         Dictionary<string, string> rewordGroup = new Dictionary<string, string>()
         {
@@ -342,7 +342,7 @@ public static class ParseHelper
         List<string> excludeGroup = [
             "Water", "Wind", "Earth", "Fire", "Wild", "Aether",
             "Essence", "Wisp", "Kami", "Salamander",
-            "Hit", "On Crit", "On Support Action", "On Attack", "On Action", "Attack", "Critical Hit", "Critical Hits",
+            "Hit", "On Support Action", "On Attack", "On Action", "Attack", "Critical Hit", "Critical Hits",
             "random Aether", "Action", "On Dedicated Support Action", "Hits"
         ];
 
