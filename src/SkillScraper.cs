@@ -244,21 +244,21 @@ public static class ParseHelper
             case EAcquisitionRequirements.Terror:
                 return " can apply {Terror}.";
             case EAcquisitionRequirements.Water:
-                return " has a {Water Action}.";
+                return " has a [Water Action].";
             case EAcquisitionRequirements.Fire:
-                return " has a {Fire Action}.";
+                return " has a [Fire Action].";
             case EAcquisitionRequirements.Wind:
-                return " has a {Wind Action}.";
+                return " has a [Wind Action].";
             case EAcquisitionRequirements.Earth:
-                return " has a {Earth Action}.";
+                return " has an [Earth Action].";
             case EAcquisitionRequirements.WaterDamage:
-                return " can apply {Water Damage}.";
+                return " can apply [Water Damage].";
             case EAcquisitionRequirements.FireDamage:
-                return " can apply {Water Damage}.";
+                return " can apply [Fire Damage].";
             case EAcquisitionRequirements.WindDamage:
-                return " can apply {Wind Damage}.";
+                return " can apply [Wind Damage].";
             case EAcquisitionRequirements.EarthDamage:
-                return " can apply {Earth Damage}.";
+                return " can apply [Earth Damage].";
             case EAcquisitionRequirements.TriggerPoison:
                 return " can trigger {Poison}.";
             case EAcquisitionRequirements.Purge:
