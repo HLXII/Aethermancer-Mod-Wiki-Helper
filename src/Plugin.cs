@@ -20,13 +20,13 @@ public class Plugin : BaseUnityPlugin
         _harmony?.UnpatchSelf();
     }
 
-    [HarmonyPatch(typeof(SkillPicker), "RollThreeSkills")]
-    class SkillPickerPatch2
+    [HarmonyPatch(typeof(UIController), "Initialize")]
+    class InputPatch
     {
-        static void Postfix(SkillPicker __instance)
+        static void Postfix(UIController __instance)
         {
-            Debug.Log($"Skill Picker Rolled for {__instance.Monster.Name}");
-            SkillScraper.RunScrape(__instance.Monster);
+            Debug.Log("Patching anotha hook onto UIController on Initialize");
+            __instance.gameObject.AddComponent<InputHook>().Init(__instance);
         }
     }
 }
