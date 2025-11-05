@@ -11,9 +11,11 @@ namespace WikiHelper.Output;
 
 public static class SkillWriter
 {
+    private static string DirectoryPath => Path.Combine(Paths.PluginPath, "output");
+
     private static string FilePath(string name)
     {
-        return Path.Combine(Paths.PluginPath, $"{name}_v{Application.version}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.txt");
+        return Path.Combine(DirectoryPath, $"v{Application.version}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}_{name}.txt");
     }
 
     public static void WriteSkillFiles(
@@ -22,6 +24,8 @@ public static class SkillWriter
         Dictionary<string, SigTraitData> sigTraits
     )
     {
+        Directory.CreateDirectory(DirectoryPath);
+
         WriteActionFile(action);
         WriteTraitFile(traits);
         WriteSigTraitFile(sigTraits);
