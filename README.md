@@ -2,9 +2,7 @@
 Bepinex mod for Aethermancer to help with wiki management
 
 ## Skill Scraper
-Currently we hook into `SkillPicker.RollThreeSkills`, and scrape all existing Skills from the Monster type lists. This requires actually triggering the Skill roll, which usually can be done by leveling up a monster.
-
-I tried just reading the skill data raw at startup, however it requires a `Monster` instance from the `SkillPicker`. For some reason grabbing one from `GameController.Instance.CompleteMonsterList` doesn't work.
+Press `F2` to run the Skill Scraper. You must be in Pilgrim's rest or in the Overworld.
 
 After scraping the data, it will parse it and generate the database Lua modules to be uploaded to the wiki. These files are stored in the same location as the plugin.
 
