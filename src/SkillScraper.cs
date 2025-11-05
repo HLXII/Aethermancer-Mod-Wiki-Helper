@@ -74,6 +74,7 @@ public static class SkillScraper
         traits.Remove("Corrupted Aether");
         traits.Remove("Corruptions Grasp");
         traits.Remove("Torments Acolyte");
+        traits.Remove("Unending");
 
         traits.Remove("?????");
     }
@@ -243,13 +244,13 @@ public static class ParseHelper
             case EAcquisitionRequirements.Terror:
                 return " can apply {Terror}.";
             case EAcquisitionRequirements.Water:
-                return " as a {Water Action}.";
+                return " has a {Water Action}.";
             case EAcquisitionRequirements.Fire:
-                return " as a {Fire Action}.";
+                return " has a {Fire Action}.";
             case EAcquisitionRequirements.Wind:
-                return " as a {Wind Action}.";
+                return " has a {Wind Action}.";
             case EAcquisitionRequirements.Earth:
-                return " as a {Earth Action}.";
+                return " has a {Earth Action}.";
             case EAcquisitionRequirements.WaterDamage:
                 return " can apply {Water Damage}.";
             case EAcquisitionRequirements.FireDamage:
@@ -263,7 +264,7 @@ public static class ParseHelper
             case EAcquisitionRequirements.Purge:
                 return " can {Purge} or {Steal} [Aether].";
             case EAcquisitionRequirements.DedicatedSupportAction:
-                return " has a {Support Action}. <abbr title=\"Bugged, supposed to be Dedicated Support Action.\" style='font-size: 120%'>*</abbr>";
+                return " has a {Support Action}. <abbr title=\\\"Bugged, supposed to be Dedicated Support Action.\\\" style='font-size: 120%'>*</abbr>";
             default:
                 Debug.LogError($"Unrecognized requirement {req}");
                 return "";
@@ -437,8 +438,8 @@ public static class ParseHelper
             { "Steal", "Steal" }, { "Steals", "Steal" },  { "Stolen", "Steal" },
             { "Critical Hits", "Critical Hit" }, {"critical", "Critical Hit" },
             { "on Dedicated Support Action", "On Dedicated Support Action" },
-            { "On Water Action from any ally", "On Earth Action" },
-            { "On Wind Action from any ally", "On Earth Action" },
+            { "On Water Action from any ally", "On Water Action" },
+            { "On Wind Action from any ally", "On Wind Action" },
             { "On Earth Action from any ally", "On Earth Action" },
             { "On Support Action from any ally", "Support Action" },
             { "On Support Action", "Support Action" },
