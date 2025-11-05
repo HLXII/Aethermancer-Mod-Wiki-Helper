@@ -27,6 +27,22 @@
 			"group": "build"
 		},
 		{
+			"label": "Deploy Plugin to Scripts",
+			"type": "shell",
+			"dependsOn": "dotnet: build",
+			"command": "del /Q \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Aethermancer\\BepInEx\\scripts\\WikiHelper.dll\" && copy /y \"src\\bin\\Debug\\netstandard2.1\\WikiHelper.dll\" \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Aethermancer\\BepInEx\\scripts\" && del /Q \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Aethermancer\\BepInEx\\scripts\\WikiHelper.pdb\" && copy /y \"src\\bin\\Debug\\netstandard2.1\\WikiHelper.pdb\" \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Aethermancer\\BepInEx\\scripts\"",
+			"options": {
+				"shell": {
+					"executable": "cmd.exe",
+					"args": [
+						"/c"
+					]
+				}
+			},
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
 			"label": "Build and Deploy",
 			"dependsOn": [
 				"dotnet: build",
@@ -35,7 +51,17 @@
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
-				"isDefault": true
+			}
+		},
+		{
+			"label": "Build and Deploy as Script",
+			"dependsOn": [
+				"dotnet: build",
+				"Deploy Plugin to Scripts"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
 			}
 		}
 	]
