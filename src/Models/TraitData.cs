@@ -42,7 +42,7 @@ public static class TraitExtensions
 
         SkillPicker.WeightedSkill weightedSkill = new SkillPicker.WeightedSkill(trait, 1);
         PassiveInstance passiveInstance = new PassiveInstance(weightedSkill.Skill, monster);
-        data.Effect = ParseHelper.ReformatDescription(trait.GetDescription(passiveInstance));
+        data.Effect = ParseHelper.ReformatDescription(trait.Name, trait.GetDescription(passiveInstance));
         try
         {
             data.Key = ParseHelper.ParseForKeys(data.Effect);
@@ -63,7 +63,7 @@ public static class TraitExtensions
 
         SkillPicker.WeightedSkill weightedSkill = new SkillPicker.WeightedSkill(trait, 1);
         PassiveInstance passiveInstance = new PassiveInstance(weightedSkill.Skill, monster);
-        data.Effect = ParseHelper.ReformatDescription(trait.GetDescription(passiveInstance));
+        data.Effect = ParseHelper.ReformatDescription(trait.Name, trait.GetDescription(passiveInstance));
         try
         {
             data.Key = ParseHelper.ParseForKeys(data.Effect);
