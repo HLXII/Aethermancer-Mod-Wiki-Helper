@@ -7,10 +7,17 @@ namespace WikiHelper;
 [BepInPlugin("org.hlxii.plugin.wikiHelper", "Wiki Helper", "0.0.0")]
 public class Plugin : BaseUnityPlugin
 {
+    private static Harmony _harmony;
+
     private void Awake()
     {
-        var harmony = new Harmony("org.hlxii.plugin.wikiHelper");
-        harmony.PatchAll();
+        _harmony = new Harmony("org.hlxii.plugin.wikiHelper");
+        _harmony.PatchAll();
+    }
+
+    private void OnDestroy()
+    {
+        _harmony?.UnpatchSelf();
     }
 
     [HarmonyPatch(typeof(SkillPicker), "RollThreeSkills")]
