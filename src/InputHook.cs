@@ -21,6 +21,12 @@ public class InputHook : MonoBehaviour
             // Grabbing Cherufe
             var monster = MonsterManager.Instance.GetMonster(718);
             SkillScraper.RunScrape(monster);
+
+            // TODO: Scrape Monsters
+            // MonsterManager.Instance.AllMonsters
+
+            // Scraping Equipment
+            EquipmentScraper.RunScrape(monster);
         }
     }
 }
