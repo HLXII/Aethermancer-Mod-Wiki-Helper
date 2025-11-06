@@ -11,20 +11,13 @@ namespace WikiHelper.Output;
 
 public static class SkillWriter
 {
-    private static string DirectoryPath => Path.Combine(Paths.PluginPath, "output");
-
-    private static string FilePath(string name)
-    {
-        return Path.Combine(DirectoryPath, $"v{Application.version}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}_{name}.txt");
-    }
-
     public static void WriteSkillFiles(
         Dictionary<string, ActionData> action,
         Dictionary<string, TraitData> traits,
         Dictionary<string, SigTraitData> sigTraits
     )
     {
-        Directory.CreateDirectory(DirectoryPath);
+        Directory.CreateDirectory(FileWriter.DirectoryPath);
 
         WriteActionFile(action);
         WriteTraitFile(traits);
@@ -33,7 +26,7 @@ public static class SkillWriter
 
     private static void WriteActionFile(Dictionary<string, ActionData> actions)
     {
-        using StreamWriter outputFile = new StreamWriter(FilePath("actions"));
+        using StreamWriter outputFile = new StreamWriter(FileWriter.FilePath("actions"));
 
         // Split by type
         List<ActionData> starting = actions.Values.Where(action => action.Starting).OrderBy(p => p.Name).ToList();
@@ -101,7 +94,7 @@ public static class SkillWriter
 
     private static void WriteTraitFile(Dictionary<string, TraitData> traits)
     {
-        using StreamWriter outputFile = new StreamWriter(FilePath("traits"));
+        using StreamWriter outputFile = new StreamWriter(FileWriter.FilePath("traits"));
 
         // Header
         outputFile.WriteLine("local traits = {");
@@ -151,7 +144,7 @@ public static class SkillWriter
 
     private static void WriteSigTraitFile(Dictionary<string, SigTraitData> traits)
     {
-        using StreamWriter outputFile = new StreamWriter(FilePath("sig_traits"));
+        using StreamWriter outputFile = new StreamWriter(FileWriter.FilePath("sig_traits"));
 
         // Header
         outputFile.WriteLine("local traits = {");
