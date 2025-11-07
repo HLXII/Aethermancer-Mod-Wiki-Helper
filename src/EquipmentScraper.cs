@@ -14,7 +14,7 @@ public static class EquipmentScraper
 
         List<ItemManager.EquipmentItemInstance> equipmentItemInstances = ItemManager.Instance.Equipments;
 
-        var equipData = equipmentItemInstances.Select(instance => instance.ToData(monster)).OrderBy(equip => equip.Name);
+        var equipData = equipmentItemInstances.Select(instance => instance.ToData(monster)).ToList().OrderBy(equip => equip.Name);
 
         Debug.Log($"Equipment parsed! - Equips: {equipData.Count()}");
 

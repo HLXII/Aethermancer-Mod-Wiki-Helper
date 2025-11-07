@@ -405,6 +405,12 @@ public static class ParseHelper
         description = description.Replace("{minions}", "{Minions}");
         description = description.Replace("{minion}", "{Minion}");
 
+        // Fix on single target attack (equips)
+        description = description.Replace("{On single-target Attack}", "{On Single-Target Attack}");
+
+        // Fix temp power casing (equips)
+        description = description.Replace("{temporary Power}", "{Temporary Power}");
+
         if (oldDescription != description)
         {
             Debug.LogWarning($"Item \"{name}\" required post-processing that we should not need to do but have to.");
