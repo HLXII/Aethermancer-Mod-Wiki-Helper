@@ -39,10 +39,10 @@ public static class BaseActionExtensions
         data.Requires = action.GetRequirement();
         SkillPicker.WeightedSkill weightedSkill = new SkillPicker.WeightedSkill(action, 1);
         SkillInstance skillInstance = new SkillInstance(weightedSkill.Action, monster);
-        data.Effect = ParseHelper.ReformatDescription(action.Name, action.GetDescription(skillInstance));
+        data.Effect = DescriptionHelper.ReformatDescription(action.Name, action.GetDescription(skillInstance));
         try
         {
-            data.Key = ParseHelper.ParseForKeys(data.Effect);
+            data.Key = DescriptionHelper.ParseForKeys(data.Effect);
         }
         catch (Exception ex)
         {

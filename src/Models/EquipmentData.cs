@@ -24,16 +24,16 @@ public static class EquipmentInstanceExtensions
         var data = new EquipmentData();
         data.Name = equip.BaseItem.Name;
         EquipmentInstance equipInstance = new EquipmentInstance(equip.BaseItem as Equipment, monster, 1, false, 0);
-        data.Common = ParseHelper.ReformatDescription(data.Name, (equip.BaseItem as Equipment).GetDescription(equipInstance));
+        data.Common = DescriptionHelper.ReformatDescription(data.Name, (equip.BaseItem as Equipment).GetDescription(equipInstance));
         EquipmentInstance rareEquipInstance = new EquipmentInstance(equip.RareItem as Equipment, monster, 1, false, 0);
-        data.Rare = ParseHelper.ReformatDescription(data.Name, (equip.RareItem as Equipment).GetDescription(rareEquipInstance));
+        data.Rare = DescriptionHelper.ReformatDescription(data.Name, (equip.RareItem as Equipment).GetDescription(rareEquipInstance));
         EquipmentInstance epicEquipInstance = new EquipmentInstance(equip.EpicItem as Equipment, monster, 1, false, 0);
-        data.Epic = ParseHelper.ReformatDescription(data.Name, (equip.EpicItem as Equipment).GetDescription(epicEquipInstance));
+        data.Epic = DescriptionHelper.ReformatDescription(data.Name, (equip.EpicItem as Equipment).GetDescription(epicEquipInstance));
 
         string allDescriptions = string.Join(" ", [data.Common, data.Rare, data.Epic]);
         try
         {
-            data.Key = ParseHelper.ParseForKeys(allDescriptions);
+            data.Key = DescriptionHelper.ParseForKeys(allDescriptions);
         }
         catch (Exception ex)
         {
