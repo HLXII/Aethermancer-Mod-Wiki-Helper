@@ -50,6 +50,9 @@ public class InputHookManager : MonoBehaviour
     {
         if (Keyboard.current.f2Key.wasPressedThisFrame)
         {
+            // Scraping Monsters
+            MonsterScraper.RunScrape();
+
             // Grabbing Cherufe
             var monster = MonsterManager.Instance.GetMonster(718);
             SkillScraper.RunScrape(monster);
