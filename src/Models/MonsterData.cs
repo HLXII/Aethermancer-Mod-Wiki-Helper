@@ -24,7 +24,7 @@ public class MonsterData
     public int Soulbond { get; set; }
     public bool Available { get; set; } = true;
 
-    // TODO: Poise
+    public (string, float) Poise { get; set; }
     public string ResetAction { get; set; }
     public List<(string, string)> EnemyTraits { get; set; }
     public List<(string, string)> EnemyActions { get; set; }

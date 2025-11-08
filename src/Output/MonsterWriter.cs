@@ -101,13 +101,17 @@ public static class MonsterWriter
         outputFile.WriteLine($"\t[\"{index}\"] = {{");
         outputFile.WriteLine($"\t\tname\t\t\t= \"{monster.Name}\",");
         outputFile.WriteLine($"\t\tshifted\t\t\t= {(monster.Shifted ? "true" : "false")},");
-        outputFile.WriteLine($"\t\tpoise\t\t\t= {{}},");
-        outputFile.WriteLine($"\t\treset\t\t\t= \"{monster.ResetAction}\",");
+
+        string poise = $"element = \"{monster.Poise.Item1.ToLower()}\", value = {monster.Poise.Item2}";
+        poise = "{ " + poise + " }";
+        outputFile.WriteLine($"\t\tpoise\t\t\t= {poise},");
+
+        outputFile.WriteLine($"\t\treset\t\t\t= \"{monster.ResetAction.ToLower()}\",");
 
         outputFile.WriteLine($"\t\tactions\t\t\t= {{");
         foreach ((var action, var condition) in monster.EnemyActions)
         {
-            string actionStr = "{" + $"action = \"{action.ToLower()}\", condition = \"{condition}\"" + "}";
+            string actionStr = "{" + $"action = \"{action.ToLower()}\", conditions = \"{condition}\"" + "}";
             outputFile.WriteLine($"\t\t\t{actionStr},");
         }
         outputFile.WriteLine("\t\t},");
@@ -115,7 +119,7 @@ public static class MonsterWriter
         outputFile.WriteLine($"\t\ttraits\t\t\t= {{");
         foreach ((var trait, var condition) in monster.EnemyTraits)
         {
-            string traitStr = "{" + $"trait = \"{trait.ToLower()}\", condition = \"{condition}\"" + "}";
+            string traitStr = "{" + $"trait = \"{trait.ToLower()}\", conditions = \"{condition}\"" + "}";
             outputFile.WriteLine($"\t\t\t{traitStr},");
         }
         outputFile.WriteLine("\t\t},");
@@ -123,10 +127,10 @@ public static class MonsterWriter
         outputFile.WriteLine($"\t\tperks\t\t\t= {{");
         foreach ((var perk, var val, var condition) in monster.EnemyPerks)
         {
-            string perkStr = "{perk = {" + $"\"{perk.ToLower()}\", {val:F0}" + $"}}, condition = \"{condition}\"}}";
+            string perkStr = "{perk = {" + $"\"{perk.ToLower()}\", {val:F0}" + $"}}, conditions = \"{condition}\"}}";
             outputFile.WriteLine($"\t\t\t{perkStr},");
         }
-        outputFile.WriteLine("\t\t},");
+        outputFile.WriteLine("\t\t}");
 
         outputFile.WriteLine("\t},");
     }

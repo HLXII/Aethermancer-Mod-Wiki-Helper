@@ -96,8 +96,6 @@ public static class MonsterScraper
         data.Ambush = IsAmbush(monster);
         shiftData.Ambush = data.Ambush;
 
-        // TODO: Parse Witch upgrades
-        // public int Soulbond { get; set; }
         data.Health = monster.Stats.BaseMaxHealth;
         data.Perks = monster.Stats.PerkInfosList?.Select(ParsePerk).ToList() ?? [];
 
@@ -133,10 +131,19 @@ public static class MonsterScraper
             ? shift.ResetPoiseActionOverride.GetComponent<BaseAction>().Name.Replace("Reset Action: ", "")
             : data.ResetAction;
 
-        // TODO: Poise
+        List<StaggerDefine> poise = monster.SkillManager.StaggerDefines;
+        if (poise.Count == 1)
+        {
+            data.Poise = (poise.First().Element.ToString(), poise.First().Hits);
+            shiftData.Poise = data.Poise;
+        }
+        else
+        {
+            Debug.LogError($"Monster {data.Name} has irregular Poise");
+        }
 
-        data.EnemyTraits = [(data.SignatureTrait, "")];
-        shiftData.EnemyTraits = [(shiftData.SignatureTrait, "")];
+        data.EnemyTraits = [];
+        shiftData.EnemyTraits = [];
         if (data.Champion && monster.SkillManager.EliteTrait != null)
         {
             string eliteTrait = monster.SkillManager.EliteTrait.GetComponent<Trait>().Name;
@@ -181,6 +188,12 @@ public static class MonsterScraper
 
             string action = enemyAction.Action.GetComponent<BaseAction>().Name;
 
+            // Skip unleash tome
+            if (action == "Unleash Tome")
+            {
+                continue;
+            }
+
             // Getting all requirements
             List<string> allRequirements = enemyAction.Conditions
                 .Where(condition => condition.Condition != MonsterAIActionCondition.ECondition.MonsterShift)
@@ -194,11 +207,11 @@ public static class MonsterScraper
             {
                 if (shiftReq.MonsterShift == EMonsterShift.Normal)
                 {
-                    data.EnemyActions.Add((action, requirements));
+                    AddNewEnemyAction(data, action, requirements);
                 }
                 else if (shiftReq.MonsterShift == EMonsterShift.Shifted)
                 {
-                    shiftData.EnemyActions.Add((action, requirements));
+                    AddNewEnemyAction(shiftData, action, requirements);
                 }
                 else
                 {
@@ -207,13 +220,13 @@ public static class MonsterScraper
             }
             else
             {
-                data.EnemyActions.Add((action, requirements));
-                shiftData.EnemyActions.Add((action, requirements));
+                AddNewEnemyAction(data, action, requirements);
+                AddNewEnemyAction(shiftData, action, requirements);
             }
         }
 
-        data.EnemyPerks = [(data.Perks[0].Item1, data.Perks[0].Item2, "")];
-        shiftData.EnemyPerks = [(shiftData.Perks[0].Item1, shiftData.Perks[0].Item2, "")];
+        data.EnemyPerks = [];
+        shiftData.EnemyPerks = [];
         var voidPerks1 = monster.AI.VoidPerks.Select(ParsePerk);
         data.EnemyPerks.AddRange(voidPerks1.Select(perk => (perk.Item1, perk.Item2, "")));
         shiftData.EnemyPerks.AddRange(voidPerks1.Select(perk => (perk.Item1, perk.Item2, "")));
@@ -223,12 +236,12 @@ public static class MonsterScraper
         shiftData.EnemyPerks.AddRange(voidPerks2.Select(perk => (perk.Item1, perk.Item2, "Biome Tier 2 or higher")));
 
         var voidPerks3 = monster.AI.VoidPerksTier3.Select(ParsePerk);
-        data.EnemyPerks.AddRange(voidPerks3.Select(perk => (perk.Item1, perk.Item2, "Biome Tier 3 or higher")));
-        shiftData.EnemyPerks.AddRange(voidPerks3.Select(perk => (perk.Item1, perk.Item2, "Biome Tier 3 or higher")));
+        data.EnemyPerks.AddRange(voidPerks3.Select(perk => (perk.Item1, perk.Item2, "Biome Tier 3")));
+        shiftData.EnemyPerks.AddRange(voidPerks3.Select(perk => (perk.Item1, perk.Item2, "Biome Tier 3")));
 
         if (data.Champion)
         {
-            var championPerks = monster.AI.VoidPerksTier3.Select(ParsePerk);
+            var championPerks = monster.AI.ChampionPerks.Select(ParsePerk);
             data.EnemyPerks.AddRange(championPerks.Select(perk => (perk.Item1, perk.Item2, "Champion")));
             shiftData.EnemyPerks.AddRange(championPerks.Select(perk => (perk.Item1, perk.Item2, "Champion")));
         }
@@ -284,11 +297,11 @@ public static class MonsterScraper
         switch (condition.Condition)
         {
             case MonsterAIActionCondition.ECondition.UseOnce: return "Once per combat";
-            case MonsterAIActionCondition.ECondition.HealthBelowPercent: return $"Ally Health is {condition.Value:P0} or lower";
+            case MonsterAIActionCondition.ECondition.HealthBelowPercent: return $"Ally Health is {condition.Value * 100:F0}% or lower";
             case MonsterAIActionCondition.ECondition.BiomeTierEqualAbove: return $"Biome Tier {condition.Value:F0} or higher";
             case MonsterAIActionCondition.ECondition.DontConsumeWildAether: return "Will not consume Wild Aether on use";
-            case MonsterAIActionCondition.ECondition.CombatTurnEqualAbove: return $"Current combat round above {condition.Value:F0}";
-            case MonsterAIActionCondition.ECondition.CasterHealthBelowPercent: return $"Current Health is {condition.Value:P0} or lower";
+            case MonsterAIActionCondition.ECondition.CombatTurnEqualAbove: return $"Rounds {condition.Value:F0} or later";
+            case MonsterAIActionCondition.ECondition.CasterHealthBelowPercent: return $"Current Health is {condition.Value * 100:F0}% or lower";
             case MonsterAIActionCondition.ECondition.NoOtherMonsterPicksThisAction: return "Allies have not chosen this Action this round";
 
                 // case MonsterAIActionCondition.ECondition.HasDebuffAmount: return "";
@@ -296,5 +309,22 @@ public static class MonsterScraper
         }
         Debug.LogError($"Unhandled action condition {condition.Condition}");
         return "";
+    }
+
+    private static void AddNewEnemyAction(MonsterData data, string action, string requirements)
+    {
+        bool updatedStartingAction = false;
+        for (int i = 0; i < data.EnemyActions.Count; i++)
+        {
+            if (data.EnemyActions[i].Item1 == action)
+            {
+                data.EnemyActions[i] = (action, requirements);
+                updatedStartingAction = true;
+            }
+        }
+        if (!updatedStartingAction)
+        {
+            data.EnemyActions.Add((action, requirements));
+        }
     }
 }
