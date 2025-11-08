@@ -13,6 +13,8 @@ public static class MonsterWriter
         Directory.CreateDirectory(FileWriter.DirectoryPath);
 
         WriteMonsterFile(monsters);
+
+        WriteWildFile(monsters);
     }
 
     private static void WriteMonsterFile(Dictionary<string, MonsterData> monsters)
@@ -71,5 +73,59 @@ public static class MonsterWriter
         }
 
         outputFile.WriteLine($"\t}},");
+    }
+
+    private static void WriteWildFile(Dictionary<string, MonsterData> monsters)
+    {
+        using StreamWriter outputFile = new StreamWriter(FileWriter.FilePath("wild"));
+
+        // Header
+        outputFile.WriteLine("local monsters = {");
+
+        foreach (var monster in monsters.Values.OrderBy(p => p.MonsterId * 2 + (p.Shifted ? 1 : 0)))
+        {
+            WriteWild(monster, outputFile);
+        }
+
+        // Footer
+        outputFile.WriteLine("}");
+        outputFile.WriteLine("");
+        outputFile.WriteLine("return monsters");
+    }
+
+    private static void WriteWild(MonsterData monster, StreamWriter outputFile)
+    {
+        string index = monster.Name.ToUpperInvariant() + (monster.Shifted ? "-S" : "");
+        outputFile.WriteLine($"\t[\"{index}\"] = {{");
+        outputFile.WriteLine($"\t\tname\t\t\t= \"{monster.Name}\",");
+        outputFile.WriteLine($"\t\tshifted\t\t\t= {(monster.Shifted ? "true" : "false")},");
+        outputFile.WriteLine($"\t\tpoise\t\t\t= {{}},");
+        outputFile.WriteLine($"\t\treset\t\t\t= \"{monster.ResetAction}\",");
+
+        outputFile.WriteLine($"\t\tactions\t\t\t= {{");
+        foreach ((var action, var condition) in monster.EnemyActions)
+        {
+            string actionStr = "{" + $"action = \"{action.ToLower()}\", condition = \"{condition}\"" + "}";
+            outputFile.WriteLine($"\t\t\t{actionStr},");
+        }
+        outputFile.WriteLine("\t\t},");
+
+        outputFile.WriteLine($"\t\ttraits\t\t\t= {{");
+        foreach ((var trait, var condition) in monster.EnemyTraits)
+        {
+            string traitStr = "{" + $"trait = \"{trait.ToLower()}\", condition = \"{condition}\"" + "}";
+            outputFile.WriteLine($"\t\t\t{traitStr},");
+        }
+        outputFile.WriteLine("\t\t},");
+
+        outputFile.WriteLine($"\t\tperks\t\t\t= {{");
+        foreach ((var perk, var val, var condition) in monster.EnemyPerks)
+        {
+            string perkStr = "{perk = {" + $"\"{perk.ToLower()}\", {val:F0}" + $"}}, condition = \"{condition}\"}}";
+            outputFile.WriteLine($"\t\t\t{perkStr},");
+        }
+        outputFile.WriteLine("\t\t},");
+
+        outputFile.WriteLine("\t},");
     }
 }
