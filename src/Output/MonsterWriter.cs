@@ -82,7 +82,9 @@ public static class MonsterWriter
         // Header
         outputFile.WriteLine("local monsters = {");
 
-        foreach (var monster in monsters.Values.OrderBy(p => p.MonsterId * 2 + (p.Shifted ? 1 : 0)))
+        // TODO: go back to proper order once everything works
+        // foreach (var monster in monsters.Values.OrderBy(p => p.MonsterId * 2 + (p.Shifted ? 1 : 0)))
+        foreach (var monster in monsters.Values.OrderBy(p => p.Name + (p.Shifted ? "-S" : "")))
         {
             WriteWild(monster, outputFile);
         }
