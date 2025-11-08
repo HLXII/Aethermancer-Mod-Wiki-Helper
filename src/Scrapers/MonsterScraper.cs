@@ -97,9 +97,11 @@ public static class MonsterScraper
         shiftData.Health = shift.HealthOverride != 0 ? shift.HealthOverride : data.Health;
         shiftData.Perks = shift.PerksOverride != null && shift.PerksOverride.Any() ? shift.PerksOverride.Select(ParsePerk).ToList() : data.Perks;
         shiftData.Archetype = shift.ChangeMainType ? shift.MainTypeOverride.ToString() : data.Archetype;
-        shiftData.SignatureTrait = shift.SignatureTraitOverride != null
-            ? shift.SignatureTraitOverride.GetComponent<Trait>().Name + " (Shifted)"
-            : data.SignatureTrait;
+        // TODO: Add back in when we handle shifted in the trait name
+        // shiftData.SignatureTrait = shift.SignatureTraitOverride != null
+        //     ? shift.SignatureTraitOverride.GetComponent<Trait>().Name + " (Shifted)"
+        //     : data.SignatureTrait;
+        shiftData.SignatureTrait = data.SignatureTrait;
         shiftData.Types = shift.MonsterTypesOverride != null && shift.MonsterTypesOverride.Any()
             ? shift.MonsterTypesOverride.Select(t => t.GetComponent<MonsterType>().Type.ToString()).ToList()
             : data.Types;
