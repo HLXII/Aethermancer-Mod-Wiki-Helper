@@ -23,8 +23,8 @@ public class MonsterData
     public string Archetype { get; set; }
     public int Soulbond { get; set; }
     public bool Available { get; set; } = true;
-
     public (string, float) Poise { get; set; }
+    public List<List<(string, float)>> BossPoise { get; set; }
     public string ResetAction { get; set; }
     public List<(string, string)> EnemyTraits { get; set; }
     public List<(string, string)> EnemyActions { get; set; }

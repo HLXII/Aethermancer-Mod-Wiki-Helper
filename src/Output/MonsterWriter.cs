@@ -102,11 +102,27 @@ public static class MonsterWriter
         outputFile.WriteLine($"\t\tname\t\t\t= \"{monster.Name}\",");
         outputFile.WriteLine($"\t\tshifted\t\t\t= {(monster.Shifted ? "true" : "false")},");
 
-        string poise = $"element = \"{monster.Poise.Item1.ToLower()}\", value = {monster.Poise.Item2}";
-        poise = "{ " + poise + " }";
-        outputFile.WriteLine($"\t\tpoise\t\t\t= {poise},");
+        if (!monster.Champion)
+        {
+            string poise = $"element = \"{monster.Poise.Item1.ToLower()}\", value = {monster.Poise.Item2}";
+            poise = "{ " + poise + " }";
+            outputFile.WriteLine($"\t\tpoise\t\t\t= {poise},");
+        }
+        else
+        {
+            // BossPoise is a list of Poise rounds
+            IEnumerable<string> poiseRounds = monster.BossPoise.Select(poiseRound =>
+            {
+                // Each Poise round can be a list of Poises
+                IEnumerable<string> poises = poiseRound.Select(poise => "{ " + $"element = \"{poise.Item1}\", value = {poise.Item2}" + " }");
+                // Join into a table
+                return "{ " + string.Join(", ", poises) + " }";
+            });
+            string poiseStr = "{ " + string.Join(", ", poiseRounds) + " }";
+            outputFile.WriteLine($"\t\tpoise\t\t\t= {poiseStr},");
+        }
 
-        outputFile.WriteLine($"\t\treset\t\t\t= \"{monster.ResetAction.ToLower()}\",");
+        outputFile.WriteLine($"\t\treset\t\t\t= \"{monster.ResetAction}\",");
 
         outputFile.WriteLine($"\t\tactions\t\t\t= {{");
         foreach ((var action, var condition) in monster.EnemyActions)

@@ -131,15 +131,32 @@ public static class MonsterScraper
             ? shift.ResetPoiseActionOverride.GetComponent<BaseAction>().Name.Replace("Reset Action: ", "")
             : data.ResetAction;
 
-        List<StaggerDefine> poise = monster.SkillManager.StaggerDefines;
-        if (poise.Count == 1)
+        if (!data.Champion)
         {
-            data.Poise = (poise.First().Element.ToString(), poise.First().Hits);
-            shiftData.Poise = data.Poise;
+            List<StaggerDefine> poise = monster.SkillManager.StaggerDefines;
+            if (poise.Count == 1)
+            {
+                data.Poise = (poise.First().Element.ToString(), poise.First().Hits);
+                shiftData.Poise = data.Poise;
+            }
+            else
+            {
+                Debug.LogError($"Monster {data.Name} has irregular Poise");
+            }
         }
         else
         {
-            Debug.LogError($"Monster {data.Name} has irregular Poise");
+            List<StaggerDefine> poise = monster.SkillManager.BossStagger;
+            List<StaggerDefine> altPoise = monster.SkillManager.BossAlternativeStagger;
+
+
+            data.BossPoise = [];
+            data.BossPoise.Add(poise.Select(p => (p.Element.ToString(), p.Hits)).ToList());
+            if (altPoise.Any())
+            {
+                data.BossPoise.Add(altPoise.Select(p => (p.Element.ToString(), p.Hits)).ToList());
+            }
+            shiftData.BossPoise = data.BossPoise;
         }
 
         data.EnemyTraits = [];
