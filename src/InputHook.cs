@@ -5,13 +5,45 @@ using UnityEngine.InputSystem;
 
 namespace WikiHelper;
 
-public class InputHook : MonoBehaviour
+public class InputHookManager : MonoBehaviour
 {
-    private UIController controller;
+    public static InputHookManager Instance { get; private set; }
 
-    public void Init(UIController controller)
+    public static void Initialize()
     {
-        this.controller = controller;
+        if (Instance != null)
+        {
+            // If an instance already exists
+            Debug.LogWarning("Instance of InputHookManager exists, exiting early");
+            return;
+        }
+        Debug.Log("Creating instance of InputHookManager");
+
+        GameObject singletonObject = new GameObject(typeof(InputHookManager).Name);
+        Instance = singletonObject.AddComponent<InputHookManager>();
+
+        DontDestroyOnLoad(singletonObject);
+    }
+
+    public static void Cleanup()
+    {
+        if (Instance != null)
+        {
+            Debug.Log("Cleaning up instance of InputHookManager");
+            Destroy(Instance.gameObject);
+            Instance = null;
+        }
+    }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
@@ -21,9 +53,6 @@ public class InputHook : MonoBehaviour
             // Grabbing Cherufe
             var monster = MonsterManager.Instance.GetMonster(718);
             SkillScraper.RunScrape(monster);
-
-            // TODO: Scrape Monsters
-            // MonsterManager.Instance.AllMonsters
 
             // Scraping Equipment
             EquipmentScraper.RunScrape(monster);

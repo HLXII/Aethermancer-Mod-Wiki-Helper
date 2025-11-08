@@ -1,6 +1,5 @@
 using BepInEx;
 using HarmonyLib;
-using UnityEngine;
 
 namespace WikiHelper;
 
@@ -13,20 +12,13 @@ public class Plugin : BaseUnityPlugin
     {
         _harmony = new Harmony("org.hlxii.plugin.wikiHelper");
         _harmony.PatchAll();
+
+        InputHookManager.Initialize();
     }
 
     private void OnDestroy()
     {
+        InputHookManager.Cleanup();
         _harmony?.UnpatchSelf();
-    }
-
-    [HarmonyPatch(typeof(UIController), "Initialize")]
-    class InputPatch
-    {
-        static void Postfix(UIController __instance)
-        {
-            Debug.Log("Patching anotha hook onto UIController on Initialize");
-            __instance.gameObject.AddComponent<InputHook>().Init(__instance);
-        }
     }
 }
