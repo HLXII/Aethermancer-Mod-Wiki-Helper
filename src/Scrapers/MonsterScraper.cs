@@ -18,8 +18,11 @@ public static class MonsterScraper
 
         Dictionary<int, Monster> sanitizedMonsters = Sanitize(monsters);
 
+        // Getting soul bond costs
+        Dictionary<string, int> soulbondCosts = GetSoulbondCosts();
+
         // Parsing to wiki data
-        Dictionary<string, MonsterData> monsterData = Parse(sanitizedMonsters);
+        Dictionary<string, MonsterData> monsterData = Parse(sanitizedMonsters, soulbondCosts);
         Debug.Log($"Monsters parsed! - Monsters: {monsterData.Count}");
 
         // Writing to file
@@ -35,12 +38,27 @@ public static class MonsterScraper
         return copy;
     }
 
-    private static Dictionary<string, MonsterData> Parse(Dictionary<int, Monster> monsters)
+    private static Dictionary<string, int> GetSoulbondCosts()
+    {
+        Dictionary<string, int> costs = new();
+
+        var witchUpgrades = ProgressManager.Instance.MetaUpgrades.FirstOrDefault(upgrade => upgrade.Npc == EMetaUpgradeNPC.Witch);
+        foreach (var upgrade in witchUpgrades.MetaUpgrades)
+        {
+            var metaUpgrade = upgrade.GetComponent<MetaUpgrade>();
+            costs.Add(metaUpgrade.Name, metaUpgrade.Cost);
+        }
+
+        return costs;
+    }
+
+    private static Dictionary<string, MonsterData> Parse(Dictionary<int, Monster> monsters, Dictionary<string, int> soulbondCosts)
     {
         Dictionary<string, MonsterData> monsterData = new();
         foreach (var monster in monsters)
         {
             (MonsterData baseData, MonsterData shiftData) = ParseMonster(monster.Key, monster.Value);
+            baseData.Soulbond = soulbondCosts.ContainsKey(baseData.Name) ? soulbondCosts[baseData.Name] : 0;
             monsterData.Add(baseData.Name.ToUpperInvariant(), baseData);
             monsterData.Add($"{shiftData.Name.ToUpperInvariant()}-S", shiftData);
         }
