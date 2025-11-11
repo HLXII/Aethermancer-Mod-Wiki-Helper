@@ -110,7 +110,7 @@ public static class MonsterScraper
 
         // Getting Shift data
         MonsterShift shift = monster.GetShiftOverride(EMonsterShift.Shifted);
-        shiftData.Health = shift.HealthOverride != 0 ? shift.HealthOverride : data.Health;
+        shiftData.Health = shift.ChangeHealth && shift.HealthOverride != 0 ? shift.HealthOverride : data.Health;
         shiftData.Perks = shift.PerksOverride != null && shift.PerksOverride.Any() ? shift.PerksOverride.Select(ParsePerk).ToList() : data.Perks;
         shiftData.Archetype = shift.ChangeMainType ? shift.MainTypeOverride.ToString() : data.Archetype;
         // TODO: Add back in when we handle shifted in the trait name
