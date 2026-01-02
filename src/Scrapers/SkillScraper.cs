@@ -265,6 +265,8 @@ public static class SkillParseHelper
                 return " can {Purge} or {Steal} [Aether].";
             case EAcquisitionRequirements.DedicatedSupportAction:
                 return " has a {Support Action}. <abbr title=\\\"Bugged, supposed to be Dedicated Support Action.\\\" style='font-size: 120%'>*</abbr>";
+            case EAcquisitionRequirements.Bleed:
+                return " can apply {Bleed}.";
             default:
                 Debug.LogError($"Unrecognized requirement {req}");
                 return "";

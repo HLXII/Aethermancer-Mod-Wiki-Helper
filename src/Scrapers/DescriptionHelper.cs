@@ -131,6 +131,9 @@ public static class DescriptionHelper
         // Fix temp power casing (equips)
         description = description.Replace("{temporary Power}", "{Temporary Power}");
 
+        // Fix wrong minion bracket (Cunning minions)
+        description = description.Replace("[Minion]", "{Minion}");
+
         if (oldDescription != description)
         {
             Debug.LogWarning($"Item \"{name}\" required post-processing that we should not need to do but have to.");
@@ -152,7 +155,7 @@ public static class DescriptionHelper
             "Age", "Cooking", "Dodge", "Force", "Glory", "Power", "Temporary Power", "Redirect", "Regeneration", "Sidekick", "Bleed", "Burn", "Poison", "Terror", "Weakness", "Affliction",
             // Modifiers
             "Crit Chance", "Shield Generator", "Evasion", "Corruption Cleanse", "Terror Application", "Aether", "Health", "Damage", "Healing", "Defense",
-            "Earth Damage", "Fire Damage", "Water Damage", "Wind Damage", "Burn Damage", "Sidekick Damage", "Crit Damage", "Minion Damage",
+            "Earth Damage", "Fire Damage", "Water Damage", "Wind Damage", "Burn Damage", "Sidekick Damage", "Crit Damage", "Minion Damage", "Weakness Reduction", "Regeneration Healing", "Minion Limit",
             // Misc
             "Retaliate", "Shield",
             "Minion", "Corruption", "Max Health", "Poise", "On Crit", "Critical Hit", "On Action", "On Attack", "On Dedicated Support Action", "Support Action",
@@ -162,7 +165,7 @@ public static class DescriptionHelper
             { "Shields", "Shield" }, { "Shielding", "Shield" }, { "Shielded", "Shield" },
             { "Purge", "Purge" }, { "Purges", "Purge" }, { "Purged", "Purge" },
             { "Steal", "Steal" }, { "Steals", "Steal" },  { "Stolen", "Steal" },
-            { "Critical Hits", "Critical Hit" }, {"critical", "Critical Hit" },
+            { "Critical Hits", "Critical Hit" }, {"critical", "Critical Hit" }, { "On Crit from an ally", "Critical Hit" },
             { "on Dedicated Support Action", "On Dedicated Support Action" },
             { "On Water Action from any ally", "On Water Action" },
             { "On Wind Action from any ally", "On Wind Action" },
