@@ -208,9 +208,9 @@ public static class SkillParseHelper
             case EAcquisitionRequirements.Shields:
                 return " has a {Shielding Action}.";
             case EAcquisitionRequirements.Buffs:
-                return " can apply buffs.";
+                return " has a buff [Action].";
             case EAcquisitionRequirements.Debuffs:
-                return " can apply debuffs.";
+                return " has a debuff [Action].";
             case EAcquisitionRequirements.DamagingDebuffs:
                 return " can apply damaging debuffs ({Bleed}, {Burn}, {Poison}, {Terror}).";
             case EAcquisitionRequirements.Summons:

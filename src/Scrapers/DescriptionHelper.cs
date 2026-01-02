@@ -134,6 +134,12 @@ public static class DescriptionHelper
         // Fix wrong minion bracket (Cunning minions)
         description = description.Replace("[Minion]", "{Minion}");
 
+        // Fix CURSED BLOOD
+        description = description.Replace("[Critical]", "{Critical}");
+
+        // Fix side crits
+        description = description.Replace("{critical}", "{Critical}");
+
         if (oldDescription != description)
         {
             Debug.LogWarning($"Item \"{name}\" required post-processing that we should not need to do but have to.");
@@ -165,7 +171,7 @@ public static class DescriptionHelper
             { "Shields", "Shield" }, { "Shielding", "Shield" }, { "Shielded", "Shield" },
             { "Purge", "Purge" }, { "Purges", "Purge" }, { "Purged", "Purge" },
             { "Steal", "Steal" }, { "Steals", "Steal" },  { "Stolen", "Steal" },
-            { "Critical Hits", "Critical Hit" }, {"critical", "Critical Hit" }, { "On Crit from an ally", "Critical Hit" },
+            { "Critical Hits", "Critical Hit" }, {"critical", "Critical Hit" }, { "On Crit from an ally", "On Crit" },
             { "on Dedicated Support Action", "On Dedicated Support Action" },
             { "On Water Action from any ally", "On Water Action" },
             { "On Wind Action from any ally", "On Wind Action" },

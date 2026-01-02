@@ -69,7 +69,7 @@ public static class MonsterScraper
     // Hard coding
     private static string[] Starters = ["Cherufe", "Jotunn", "Minokawa", "Nixe"];
     private static string[] Hiddens = ["Jotunn", "Catzerker", "Cherufe", "Dark Elder", "Minokawa", "Nixe"];
-    private static string[] Champions = ["Warden", "Star Spawn", "Hecatoncheires"];
+    private static string[] Champions = ["Warden", "Star Spawn", "Hecatoncheires", "Ravager"];
 
     private static (MonsterData, MonsterData) ParseMonster(int index, Monster monster)
     {
@@ -316,7 +316,7 @@ public static class MonsterScraper
             case MonsterAIActionCondition.ECondition.UseOnce: return "Once per combat";
             case MonsterAIActionCondition.ECondition.HealthBelowPercent: return $"Ally Health is {condition.Value * 100:F0}% or lower";
             case MonsterAIActionCondition.ECondition.BiomeTierEqualAbove: return $"Biome Tier {condition.Value:F0} or higher";
-            case MonsterAIActionCondition.ECondition.DontConsumeWildAether: return "Will not consume Wild Aether on use";
+            case MonsterAIActionCondition.ECondition.DontConsumeWildAether: return "Does not account for Wild Aether to use at the start of the round";
             case MonsterAIActionCondition.ECondition.CombatTurnEqualAbove: return $"Rounds {condition.Value:F0} or later";
             case MonsterAIActionCondition.ECondition.CasterHealthBelowPercent: return $"Current Health is {condition.Value * 100:F0}% or lower";
             case MonsterAIActionCondition.ECondition.NoOtherMonsterPicksThisAction: return "Allies have not chosen this Action this round";
